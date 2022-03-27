@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "djoser",
     "drf_spectacular",
     "rest_framework",
     "users",
@@ -91,6 +92,10 @@ REST_FRAMEWORK = {
 }
 # TODO здесь мы настраиваем Djoser
 DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserRegistrationSerializer'
+    },
+    'LOGIN_FIELD': 'email'
 }
 
 # Database
@@ -98,7 +103,7 @@ DJOSER = {
 
 # TODO здесь необходимо настроить подключение к БД
 DATABASES = {  'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': "django.db.backends.postgresql",
         'NAME': 'skymarket',
         'USER': 'skymarket',
         'PASSWORD': 'skymarket',
