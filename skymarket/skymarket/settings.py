@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "djoser",
     "phonenumber_field",
-    "documentation",
+    # "documentation",
     "corsheaders",
     "users",
     "ads",
@@ -106,7 +106,8 @@ DJOSER = {
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # TODO здесь необходимо настроить подключение к БД
-DATABASES = {'default': {
+DATABASES = {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'skymarket',
         'USER': 'skymarket',
@@ -115,6 +116,7 @@ DATABASES = {'default': {
         'PORT': '5432',
     }
 }
+
 
 
 # Password validation

@@ -2,16 +2,8 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
-from skymarket.users.managers import UserManager
+from users.managers import UserManager, UserRole
 
-
-class UserRoles:
-    USER = 'user'
-    ADMIN = 'admin'
-    choices = (
-        (USER, USER),
-        (ADMIN, ADMIN),
-    )
 
 
 class User(AbstractBaseUser):
@@ -19,14 +11,14 @@ class User(AbstractBaseUser):
     password = models.CharField(max_length=100, verbose_name="Пароль")
     last_login = models.DateTimeField(blank=True,null=True)
     phone = PhoneNumberField(verbose_name="Телефон для связи")
-    role = models.CharField(max_length=20, choices=UserRoles.choices, default=UserRoles.USER,
+    role = models.CharField(max_length=20, choices=UserRole.choices, default=UserRole.USER,
                             verbose_name="Роль пользователя")
     first_name = models.CharField(max_length=100,verbose_name="Имя")
     last_name = models.CharField(max_length=100,verbose_name="Фамилия")
-    is_active = models.BooleanField()
+    is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone', "role"]
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone']
 
     def __str__(self):
         return self.email
@@ -49,11 +41,11 @@ class User(AbstractBaseUser):
 
     @property
     def is_admin(self):
-        return self.role == UserRoles.ADMIN
+        return self.role == UserRole.ADMIN
 
     @property
     def is_user(self):
-        return self.role == UserRoles.USER
+        return self.role == UserRole.USER
 
     class Meta:
         verbose_name = "Пользователь"
