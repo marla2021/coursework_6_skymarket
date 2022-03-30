@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "djoser",
-    "drf_spectacular",
     "rest_framework",
+    "djoser",
+    "phonenumber_field",
+    "documentation",
+    "corsheaders",
     "users",
     "ads",
     "redoc",
@@ -104,7 +106,7 @@ DJOSER = {
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # TODO здесь необходимо настроить подключение к БД
-DATABASES = {  'default': {
+DATABASES = {'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'skymarket',
         'USER': 'skymarket',
