@@ -5,7 +5,7 @@ from ads.serializers import AdSerializer, AdDetailSerializer, CommentSerializer
 
 
 class AdPagination(pagination.PageNumberPagination):
-    pass
+    page_size = 4
 
 
 # TODO view функции. Предлагаем Вам следующую структуру - но Вы всегда можете использовать свою
