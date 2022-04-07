@@ -1,6 +1,8 @@
 from rest_framework import pagination, viewsets
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 
 from ads.models import Ad, Comment
+from ads.permissions import IsOwner, IsAdmin
 from ads.serializers import AdSerializer, AdDetailSerializer, CommentSerializer
 
 
@@ -13,6 +15,14 @@ class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
 
+
+    def get_permissions(self):
+        permission_class = (AllowAny, )
+        if self.action != "retrieve":
+            permission_class = (IsOwner|IsAdmin)
+        return tuple(permission() for permission in permission_class)
+
+
     def perform_create(self, serializer):
         user = self.request.user
         serializer.save(author=user)
@@ -22,13 +32,6 @@ class AdViewSet(viewsets.ModelViewSet):
             return AdDetailSerializer
         return AdSerializer
 
-    # def get_permissions(self):
-    #     permission_classes = (AllowAny,)
-    #     if self.action in ["retrieve"]:
-    #         permission_classes = (AllowAny,)
-    #     elif self.action in ["create", "update", "partial_update", "destroy", "me"]:
-    #         permission_classes = (IsOwner | IsAdmin,)
-    #     return tuple(permission() for permission in permission_classes)
 
     def get_queryset(self):
         if self.action == "me":
@@ -40,3 +43,8 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+    def get_permissions(self):
+        permission_class = (IsAuthenticated, )
+        if self.action not in ["retrieve", "list"]:
+            permission_class = (IsOwner|IsAdmin)
+        return tuple(permission() for permission in permission_class)
